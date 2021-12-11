@@ -1,14 +1,15 @@
 from math import floor
 
-
 arr = []
+auto_complete_scores = []
+syntax_error_score = 0
+auto_complete_score_table = [')', ']', '}', '>']
 error_score_table = {
     ')': 3,
     ']': 57,
     '}': 1197,
     '>': 25137
 }
-auto_complete_score_table = [')', ']', '}', '>']
 segments = {
     '(': ')',
     '[': ']',
@@ -19,10 +20,7 @@ segments = {
 with open('input.txt') as f:
     arr = [i.strip() for i in f]
 
-auto_complete_scores = []
-syntax_error_score = 0
 for i, line in enumerate(arr):
-    # print(line[0], "\t", line[1])
     auto_complete_score = 0
     object_stack = []
     for j in line:
@@ -37,9 +35,7 @@ for i, line in enumerate(arr):
     else:
         for j in object_stack[::-1]:
             auto_complete_score = 5 * auto_complete_score + \
-                auto_complete_score_table.index(segments[j])+1
-            # print(segments[j], end="")
-        # print("\t", auto_complete_score)
+                auto_complete_score_table.index(segments[j]) + 1
         auto_complete_scores.append(auto_complete_score)
 
 print("Syntax score error:", syntax_error_score)

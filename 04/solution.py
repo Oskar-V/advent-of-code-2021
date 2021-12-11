@@ -1,15 +1,11 @@
-number_order = []
-boards = []
-with open("input.txt", 'r') as f:
-    for i in f:
-        i = i.strip()
-        if number_order == []:
-            number_order = i.split(',')
+number_order, boards, first_winner, last_winner = [], [], '', ''
+with open("input.txt") as f:
+    number_order = f.readline().strip().split(',')
+    for i in f.readlines():
+        if i.strip() == "":
+            boards.append([])
         else:
-            if i == "":
-                boards.append([])
-            else:
-                boards[-1].append([(j, 'o') for j in i.split()])
+            boards[-1].append([(j, 'o') for j in i.strip().split()])
 
 
 def isInBoard(value, board):
@@ -30,33 +26,28 @@ def hasWon(board):
     return False
 
 
-def prettyPrint(board, board_index, last_value=0):
-    print('#'*33, f'{board_index}:{last_value}', '#'*33)
-    for i in board:
-        for j in i:
-            print(f'{j}\t', end="")
-        print()
-    print('#'*33, calculateScore(board, last_value), '#'*33, end="\n\n")
-
-
 def calculateScore(board, last_number):
-    sum = 0
+    summed_value = 0
     for i in board:
-        for j in i:
-            if j[1] == 'o':
-                sum += int(j[0])
-    return sum * int(last_number)
+        summed_value += sum(int(j[0]) for j in i if j[1] == 'o')
+    return summed_value * int(last_number)
 
 
 def playGame(active_boards):
     for drawn_number in number_order:
         for board_index, j in enumerate(active_boards):
-            if isInBoard(drawn_number, j):
-                if hasWon(j):
-                    return j, drawn_number, board_index
+            if isInBoard(drawn_number, j) and hasWon(j):
+                return j, drawn_number, board_index
 
 
 while len(boards) > 0:
     winner, last_number, board_index = playGame(boards)
-    prettyPrint(winner, board_index, last_number)
+    if first_winner == '':
+        first_winner = [winner, last_number, board_index]
     boards.pop(board_index)
+    last_winner = [winner, last_number, board_index]
+
+print(
+    f"First winner: {first_winner[2]}, with a score of: {calculateScore(first_winner[0], first_winner[1])}")
+print(
+    f"First winner: {last_winner[2]}, with a score of: {calculateScore(last_winner[0], last_winner[1])}")

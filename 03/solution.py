@@ -1,5 +1,4 @@
-counters = {'0': [0]*12, '1': [0]*12}
-array = []
+counters, array = {'0': [0]*12, '1': [0]*12}, []
 with open("input.txt", 'r') as f:
     for i in f:
         array.append(i.strip())
@@ -14,9 +13,7 @@ def findMostCommon(arr, index):
     return '0' if counters['0'] > counters['1'] else '1'
 
 
-oxygen = array
-c02 = array
-index = 0
+oxygen, c02, index = array, array, 0
 
 while True:
     if len(oxygen) == 1 and len(c02) == 1:
@@ -29,21 +26,14 @@ while True:
         c02 = [i for i in c02 if i[index] != least_common]
     index += 1
 
-
-print(oxygen[0], c02[0])
-print(int(oxygen[0], base=2), int(c02[0], base=2))
-
 print("Health system", int(oxygen[0], base=2) * int(c02[0], base=2))
 
-most = ""
-least = ""
+most, least = "", ""
 for i in range(12):
-    if counters['0'][i] > counters['1'][i]:
-        most += '0'
-        least += '1'
-    else:
-        most += '1'
-        least += '0'
+    more_zeros = counters['0'][i] > counters['1'][i]
+    most += '0' if more_zeros else '1'
+    least += '1' if more_zeros else '0'
+
 
 most = int(most, base=2)
 least = int(least, base=2)

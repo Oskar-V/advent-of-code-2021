@@ -1,6 +1,6 @@
-counter = 0
-last = 'start'
 array = []
+last = 'start'
+counter = 0
 with open("input.txt", 'r') as f:
     for i in f:
         value = int(i)

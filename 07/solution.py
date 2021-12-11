@@ -1,4 +1,4 @@
-arr = []
+arr, least_fuel = [], 'start'
 with open('input.txt') as f:
     for i in f:
         arr = [int(e) for e in i.strip().split(',')]
@@ -11,8 +11,6 @@ def calculateFuelCost(array, to):
     return fuel_cost
 
 
-least_fuel = 'start'
-fuel_cost_table = {}
 for i in arr:
     print(f"Calculating for {i}")
     fuel_to_this_pos = calculateFuelCost(arr, i)

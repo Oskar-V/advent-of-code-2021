@@ -1,7 +1,6 @@
-aim = 0
-forward = 0
-depth = 0
-with open("input.txt", 'r') as f:
+aim, forward, depth = 0, 0, 0
+
+with open("input.txt") as f:
     for i in f:
         i = i.strip()
         value = int(i[-1])
@@ -11,4 +10,4 @@ with open("input.txt", 'r') as f:
         else:
             aim += (value if i[0] == 'd' else -value)
 
-print("depth * forward", depth * forward)
+print("final horizontal position * final depth =", depth * forward)

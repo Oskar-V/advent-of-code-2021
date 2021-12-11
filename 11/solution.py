@@ -1,29 +1,14 @@
 arr = []
 flash_counter = 0
+step_counter = 0
 with open('input.txt') as f:
     for i in f:
         arr.append([[int(e), False] for e in i.strip()])
 
 
-def printStatus(array):
-    print("#"*(len(array)*2-1))
-    for i in array:
-        for j in i:
-            print(j[0], end=" ")
-        print()
-    print("#"*(len(array)*2-1))
-
-
-def stage1(array):
-    for i, e in enumerate(array):
-        array[i] = [[j[0]+1, False] for j in e]
-
-
 def stage2(array, pos=(0, 0)):
     global flash_counter
     x, y = pos
-    if not 0 <= y < len(array) or not 0 <= x < len(array[y]):
-        return
     if array[y][x][1]:
         array[y][x][0] += 1
         return
@@ -49,19 +34,15 @@ def stage3(array):
     return all(rows)
 
 
-i = 0
 while(True):
-    # for i in range(200):
-    i += 1
-    print("Running step:", i)
-    # printStatus(arr)
-    stage1(arr)
+    step_counter += 1
+    for i, e in enumerate(arr):
+        arr[i] = [[j[0]+1, False] for j in e]
+
     for y, j in enumerate(arr):
         for x, k in enumerate(j):
             stage2(arr, (x, y))
     if(stage3(arr)):
-        print("All flashed at the same time")
         break
-printStatus(arr)
 
-print("Flash counter:", flash_counter)
+print(f"Flash counter:\t{flash_counter}\nStep counter:\t{step_counter}")

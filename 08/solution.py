@@ -1,33 +1,22 @@
-
-arr = []
+arr, sum = [], 0
 with open('input.txt') as f:
     arr = [i.strip().split('|') for i in f]
 
 
 def findDifferentCharacters(a, b):
-    dif = []
-    for i in a:
-        if i not in b:
-            dif.append(i)
-    for i in b:
-        if i not in a:
-            dif.append(i)
+    dif = [i for i in a if i not in b] + [i for i in b if i not in a]
     return dif[0] if len(dif) == 1 else dif
 
 
 def detectSignatures(mess):
-    mess = mess.split()
-
     signatures = {
-        "1": [i for i in mess if len(i) == 2][0],
-        "4": [i for i in mess if len(i) == 4][0],
-        "7": [i for i in mess if len(i) == 3][0],
-        "8": [i for i in mess if len(i) == 7][0],
+        '1': [i for i in mess if len(i) == 2][0],
+        '4': [i for i in mess if len(i) == 4][0],
+        '7': [i for i in mess if len(i) == 3][0],
+        '8': [i for i in mess if len(i) == 7][0],
     }
     for i in signatures.values():
         mess.remove(i)
-
-    top, mid, bot = '', '', ''
 
     # Find top segment char
     top = [i for i in signatures['7'] if i not in signatures['1']][0]
@@ -81,18 +70,18 @@ def detectSignatures(mess):
             mess.remove(i)
             break
 
+    # Add the signature for 2
     signatures['2'] = mess[0]
 
     return signatures
 
 
-sum = 0
 for t, code in arr:
     decrypted = ""
-    signatures = detectSignatures(t)
+    signatures = detectSignatures(t.split())
     res = dict((''.join(sorted(v)), k) for k, v in signatures.items())
     for i in code.split():
         decrypted += res[''.join(sorted(i))]
     sum += int(decrypted)
 
-print(sum)
+print(f"Sum of the values: {sum}")

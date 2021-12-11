@@ -24,20 +24,13 @@ def crawl(array, index=(0, 0), id=1):
         return 0
     else:
         array[y][x][2] = id
-        return 1 + sum([crawl(array, (x + 1, y),
-                              id),
-                       crawl(array, (x - 1, y),
-                             id),
-                       crawl(array, (x, y + 1),
-                             id),
-                       crawl(array, (x, y - 1),
-                             id)])
+        return 1 + sum([crawl(array, (x + 1, y), id),
+                       crawl(array, (x - 1, y),  id),
+                       crawl(array, (x, y + 1), id),
+                       crawl(array, (x, y - 1), id)])
 
 
-counter = 0
-sum_of_lows = 0
-last_id = 1
-largest_bastions = [0, 0, 0]
+counter, sum_of_lows, last_id, largest_basins = 0, 0, 1, [0, 0, 0]
 for y, i in enumerate(arr):
     for x, j in enumerate(i):
         # Find the smallest points
@@ -49,18 +42,14 @@ for y, i in enumerate(arr):
         # Map the basins
         bastion_size = crawl(arr, (x, y), last_id)
         if bastion_size != 0:
-            largest_bastions = sorted(largest_bastions)
-            if bastion_size > largest_bastions[0]:
-                largest_bastions[0] = bastion_size
+            largest_basins = sorted(largest_basins)
+            if bastion_size > largest_basins[0]:
+                largest_basins[0] = bastion_size
             last_id += 1
 
-# for i in arr:
-#     for j in i:
-#         print(j[2], end=" ")
-#     print()
 
 sum_of_basins = 1
-for i in largest_bastions:
+for i in largest_basins:
     sum_of_basins *= i
 
 
